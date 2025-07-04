@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Clean up old state
+mkdir mnt 2> /dev/null
+fusermount -u mnt/
+sudo rm /tmp/slowfs-logs 2> /dev/null
+sudo rm /tmp/fuse_slowfs.raw  2> /dev/null
+
+# Mount
+uv run examples/fuse_slowfs.py mnt/
+
+# Interactions
+ls mnt/
+mkdir mnt/dir
+echo -n "Hello" > mnt/file
+echo " world" >> mnt/file
+echo "Hello world" >> mnt/dir/file
+touch mnt/hello
+
+# Logs
+cat /tmp/slowfs-logs 2> /dev/null

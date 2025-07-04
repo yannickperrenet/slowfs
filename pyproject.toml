@@ -1,0 +1,43 @@
+[project]
+name = "slowfs"
+version = "0.1.0"
+description = "Filesystem in Python. Learn about the Linux filesystem implementation."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "coverage>=7.9.1",
+    "slowfs",
+    "pytest>=8.4.1",
+    "fuse-python>=1.0.9",
+]
+
+[tool.uv.sources]
+slowfs = { workspace = true }
+
+# Make it possible to install the local project.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/linux"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+addopts = [
+    "--import-mode=importlib",
+]
+# Hacky way to get things to work, instead of using a build-system:
+# https://docs.pytest.org/en/7.1.x/reference/reference.html#confval-pythonpath
+# pythonpath = ["src/", "."]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration.
+exclude_also = [
+    "if typing.TYPE_CHECKING:",
+]
